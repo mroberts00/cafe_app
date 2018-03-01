@@ -271,7 +271,7 @@ loop do
                     sleep 0.02
                     bar.increment!
                 end
-                puts "Payment ok"
+                puts "Payment OK"
                 sleep(2)
                 break
                 
@@ -296,7 +296,7 @@ loop do
                                 sleep 0.02
                                 bar.increment!
                             end
-                            puts "Payment ok"
+                            puts "Payment OK"
                             sleep(2)
                         end
                         break
@@ -312,7 +312,7 @@ loop do
                             sleep 0.02
                             bar.increment!
                         end
-                        puts "Payment ok"
+                        puts "Payment OK"
                         sleep(2)
                         break
                     else
@@ -321,8 +321,8 @@ loop do
                     end
                 end 
             end
-            else 
-            puts "Invalid selection, please try again."
+        else 
+        puts "Invalid selection, please try again."
         end   
     end
 end
