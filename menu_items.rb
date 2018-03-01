@@ -259,22 +259,52 @@ loop do
                 puts Terminal::Table.new :title => "#{name}".capitalize.colorize(:cyan), :headings => ['Item'.ljust(17), 'Price'.rjust(8)], :rows => rows
             end
             puts "\n"
-            puts "The total owed for all customers is $#{('%.2f' % total_owed)}.".colorize(:green)
+            puts "The total amount owed is $#{('%.2f' % total_owed)}.".colorize(:green)
             puts "\n"
 
-            loop do
-                puts "Would you like to pay 'separately' or 'together'?"
-                pay_option = gets.chomp.downcase
+            if totals_receipt.keys.count == 1
+                puts "Please enter your payment details below"
+                payment_details = gets.chomp
                 system('clear')
+                bar = ProgressBar.new(100)
+                100.times do
+                    sleep 0.02
+                    bar.increment!
+                end
+                puts "Payment ok"
+                sleep(2)
+                break
+                
+            else
+                loop do
+                    puts "Would you like to pay 'separately' or 'together'?"
+                    pay_option = gets.chomp.downcase
+                    system('clear')
 
-                if 
-                    pay_option == "separately"
-                    rows = Payment.separate_payments_receipt(totals_receipt)
-                    puts Terminal::Table.new :title => "Receipt".colorize(:cyan), :headings => ['Name'.ljust(17), 'Total'.rjust(8)], :rows => rows
-                    sleep(1)
+                    if 
+                        pay_option == "separately"
+                        rows = Payment.separate_payments_receipt(totals_receipt)
+                        puts Terminal::Table.new :title => "Receipt".colorize(:cyan), :headings => ['Name'.ljust(17), 'Total'.rjust(8)], :rows => rows
+                        sleep(1)
 
-                    totals_receipt.each do |item, price|
-                        puts "#{item.capitalize} owes $#{('%.2f' % price)}, please enter your payment details"
+                        totals_receipt.each do |item, price|
+                            puts "#{item.capitalize} owes $#{('%.2f' % price)}, please enter your payment details"
+                            payment_details = gets.chomp
+                            system('clear')
+                            bar = ProgressBar.new(100)
+                            100.times do
+                                sleep 0.02
+                                bar.increment!
+                            end
+                            puts "Payment ok"
+                            sleep(2)
+                        end
+                        break
+
+                    elsif
+                        pay_option == "together"
+                        puts "The total amount owed is $#{('%.2f' % total_owed)}.".colorize(:green)
+                        puts "Please enter your payment details below"
                         payment_details = gets.chomp
                         system('clear')
                         bar = ProgressBar.new(100)
@@ -284,29 +314,14 @@ loop do
                         end
                         puts "Payment ok"
                         sleep(2)
+                        break
+                    else
+                        puts "Invalid selection, please try again."
+                    
                     end
-                    break
-
-                elsif
-                    pay_option == "together"
-                    puts "The total owed for all customers is $#{('%.2f' % total_owed)}.".colorize(:green)
-                    puts "Please enter your payment details below"
-                    payment_details = gets.chomp
-                    system('clear')
-                    bar = ProgressBar.new(100)
-                    100.times do
-                        sleep 0.02
-                        bar.increment!
-                    end
-                    puts "Payment ok"
-                    sleep(2)
-                    break
-                else
-                    puts "Invalid selection, please try again."
-                
-                end
-            end 
-        else 
+                end 
+            end
+            else 
             puts "Invalid selection, please try again."
         end   
     end
